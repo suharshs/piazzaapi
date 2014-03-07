@@ -170,6 +170,19 @@ class PiazzaAPI:
                    '"params":{"cid":"%s","resolved":true}}' % followup_cid)
       self.url_opener.open(post_url, post_data).read()
 
+  def post_followup_comment(self, course_id, comment_text, cid):
+    """
+    Posts a comment to an existing followup.
+    """
+    post_url = ('https://piazza.com/logic/api?method=content.create&aid=%s'
+                % get_aid())
+    post_data = ('{"method":"content.create",' +
+                 '"params":{"content":"","type":"feedback","revision":0,' + 
+                 '"anonymous":"no","nid":"%s","subject":"%s","cid":"%s"}}'
+                 % (course_id,comment_text,cid))
+    post_data = post_data.encode('ascii', 'ignore')
+    self.url_opener.open(post_url, post_data).read()
+
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser(description='Get Piazza question data.')
