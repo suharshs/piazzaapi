@@ -115,7 +115,7 @@ class PiazzaAPI:
     """
     content_id = start_id
     with open(output_file, 'a+') as f:
-      while content_id < end_id:
+      while content_id <= end_id:
         content = self.get_question_data(content_id, course_id)
         print content_id
         content_id += 1
@@ -129,7 +129,7 @@ class PiazzaAPI:
     """
     es = elasticsearch.Elasticsearch(es_hosts)
     content_id = start_id
-    while content_id < end_id:
+    while content_id <= end_id:
       print course_id, content_id
       content_response = self.get_raw_content(content_id, course_id)
       if not content_response['result']:
