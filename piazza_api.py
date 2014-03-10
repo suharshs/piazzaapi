@@ -210,7 +210,7 @@ if __name__ == '__main__':
                       help='The id of the desired content. If not provided' +
                            ' all course_ids data will be written to data_file.',
                       default=None)
-  parser.add_argument('--course_ids', help='The id of the desired course.',
+  parser.add_argument('--course_ids', help='The ids of the desired courses.',
                       required=True, nargs='+')
   parser.add_argument('--start_id',
                       help='The id to start writing the course data from.',
