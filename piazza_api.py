@@ -81,14 +81,30 @@ class PiazzaAPI:
       content['error'] = 'Content was deleted.'
     else:
       content['question'] = content_response['result']['history'][0]['content']
+      content['question_upvotes'] = len(
+        content_response['result']['tag_good_arr'])
       content['subject'] = content_response['result']['history'][0]['subject']
       content['cid'] = content_response['result']['id']
       content['tags'] = ' '.join(content_response['result']['tags'])
+      content['followups'] = []
       for child in content_response['result']['children']:
         if child['type'] == 's_answer' and len(child['history']) > 0:
-          content['student_answer'] = child['history'][0]['content']
+          content['s_answer'] = child['history'][0]['content']
+          content['s_answer_upvotes'] = len(child['tag_endorse'])
         if child['type'] == 'i_answer' and len(child['history']) > 0:
-          content['instructor_answer'] = child['history'][0]['content']
+          content['i_answer'] = child['history'][0]['content']
+          content['i_answer_upvotes'] = len(child['tag_endorse'])
+        if child['type'] == 'followup':
+          followup_doc = {}
+          followup_doc['uid'] = child.get('uid', 'ANON')
+          followup_doc['content'] = child['subject']
+          followup_doc['comments'] = []
+          for comment in child['children']:
+            followup_doc['comments'].append({
+              'uid': comment.get('uid', 'ANON'),
+              'content': comment['subject']
+            })
+          content['followups'].append(followup_doc)
     return content
 
   def write_course_question_data(self, course_id, output_file, start_id=1,
